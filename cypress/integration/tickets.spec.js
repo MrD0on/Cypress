@@ -47,7 +47,7 @@ describe("Tickets", () => {
         cy.get("#email.invalid").should("not.exist")
     });
 
-    it.only("fills and reset the form", () =>{
+    it("fills and reset the form", () =>{
         const firstName = "Ruan";
         const lastName = "Souza";
         const fullName = `${firstName} ${lastName}`;
@@ -74,5 +74,24 @@ describe("Tickets", () => {
         cy.get("button[type='reset']").click();
 
         cy.get("button[type='submit']").should("be.disabled");
+    });
+
+    it.only("fills mandaroty fields using support command", () => {
+        const customer = {
+            firstName: "Ruan",
+            lastName: "Souza",
+            email: "ruan.souza@cubos.io"
+        };
+
+        cy.fillMandarotyFields(customer);
+
+        cy.get("button[type='submit]")
+          .as("submitButton")
+          .should("not.be.disabled");
+
+        cy.get("#agree").uncheck();
+
+        cy.get("button[type='submit']").should("be.disabled");
+
     });
 });
